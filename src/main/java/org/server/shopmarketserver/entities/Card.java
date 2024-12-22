@@ -17,17 +17,21 @@ public class Card {
     private String releaseDate;
     @Column(nullable = false)
     private int cost;
+    @Column(nullable = false)
+    private int quantity;
+
 
 
     public Card(){
 
     }
 
-    public Card(String name, String img, String releaseDate, int cost) {
+    public Card(String name, String img, String releaseDate, int cost,int quantity) {
         this.name = name;
         this.img = img;
         this.releaseDate = releaseDate;
         this.cost = cost;
+        this.quantity = quantity;
     }
 
     public long getId() {
@@ -70,6 +74,14 @@ public class Card {
         this.cost = cost;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     @Override
     public String toString() {
         return "Card{" +
@@ -78,6 +90,7 @@ public class Card {
                 ", img='" + img + '\'' +
                 ", releaseDate='" + releaseDate + '\'' +
                 ", cost=" + cost +
+                ", quantity=" + quantity +
                 '}';
     }
 }
