@@ -31,6 +31,7 @@ public class CardController {
             Card existingCard = cardRepository.findCardByName(card.getName());
             if (existingCard != null) {
                 existingCard.setQuantity(existingCard.getQuantity() + card.getQuantity());
+                existingCard.setCost(existingCard.getCost() * card.getQuantity());
                 cardRepository.save(existingCard);
             } else {
                 cardRepository.save(card);
@@ -46,7 +47,10 @@ public class CardController {
 
     @GetMapping("/getHowManyItemsInTheCart")
     public Response getHowManyItemsInTheCart() {
-        int size = cardRepository.findAll().size();
+        int size = 0;
+        for (Card card : cardRepository.findAll()){
+            size += card.getQuantity();
+        }
         return new Response(true, String.valueOf(size));
     }
 
