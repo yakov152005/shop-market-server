@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Market")
+@RequestMapping("/market")
 public class CardController {
     private CardRepository cardRepository;
 
@@ -18,7 +18,7 @@ public class CardController {
         this.cardRepository = cardRepository;
     }
 
-    @PostMapping("/addCardItem")
+    @PostMapping("/add-cart-item")
     public Response addCardItem(@RequestBody List<Card> cards) {
         for (Card card : cards) {
             if (card == null || card.getName() == null || card.getName().isEmpty()
@@ -40,18 +40,27 @@ public class CardController {
         return new Response(true, "Cards added/updated successfully.");
     }
 
-    @GetMapping("/getAllDetails")
+    @GetMapping("/get-all-details")
     public List<Card> getAllDetails() {
         return cardRepository.findAll().stream().toList();
     }
 
-    @GetMapping("/getHowManyItemsInTheCart")
+    @GetMapping("/get-how-many-items-cart")
     public Response getHowManyItemsInTheCart() {
         int size = 0;
         for (Card card : cardRepository.findAll()){
             size += card.getQuantity();
         }
         return new Response(true, String.valueOf(size));
+    }
+
+    @GetMapping("/get-total-price-cart")
+    public Response getTotalPriceInTheCart(){
+        int totalPrice = 0;
+        for (Card card : cardRepository.findAll()){
+            totalPrice += card.getCost();
+        }
+        return new Response(true,String.valueOf(totalPrice));
     }
 
 }
