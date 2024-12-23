@@ -27,41 +27,41 @@ public class CardController {
                 return new Response(false, "Card details are incomplete.");
             }
 
-        Card existingCard = cardRepository.findCardByName(card.getName());
-        if (existingCard != null) {
-            int newQuantity = existingCard.getQuantity() + card.getQuantity();
-            existingCard.setQuantity(newQuantity);
-            int newCost = existingCard.getCost() + card.getCost();
-            existingCard.setCost(newCost);
-            cardRepository.save(existingCard);
-        } else {
-            cardRepository.save(card);
+            Card existingCard = cardRepository.findCardByName(card.getName());
+            if (existingCard != null) {
+                int newQuantity = existingCard.getQuantity() + card.getQuantity();
+                existingCard.setQuantity(newQuantity);
+                int newCost = existingCard.getCost() + card.getCost();
+                existingCard.setCost(newCost);
+                cardRepository.save(existingCard);
+            } else {
+                cardRepository.save(card);
+            }
         }
+        return new Response(true, "Cards added/updated successfully.");
     }
-        return new Response(true,"Cards added/updated successfully.");
-}
 
-@GetMapping("/get-all-details")
-public List<Card> getAllDetails() {
-    return cardRepository.findAll().stream().toList();
-}
-
-@GetMapping("/get-how-many-items-cart")
-public Response getHowManyItemsInTheCart() {
-    int size = 0;
-    for (Card card : cardRepository.findAll()) {
-        size += card.getQuantity();
+    @GetMapping("/get-all-details")
+    public List<Card> getAllDetails() {
+        return cardRepository.findAll().stream().toList();
     }
-    return new Response(true, String.valueOf(size));
-}
 
-@GetMapping("/get-total-price-cart")
-public Response getTotalPriceInTheCart() {
-    int totalPrice = 0;
-    for (Card card : cardRepository.findAll()) {
-        totalPrice += card.getCost();
+    @GetMapping("/get-how-many-items-cart")
+    public Response getHowManyItemsInTheCart() {
+        int size = 0;
+        for (Card card : cardRepository.findAll()) {
+            size += card.getQuantity();
+        }
+        return new Response(true, String.valueOf(size));
     }
-    return new Response(true, String.valueOf(totalPrice));
-}
+
+    @GetMapping("/get-total-price-cart")
+    public Response getTotalPriceInTheCart() {
+        int totalPrice = 0;
+        for (Card card : cardRepository.findAll()) {
+            totalPrice += card.getCost();
+        }
+        return new Response(true, String.valueOf(totalPrice));
+    }
 
 }
